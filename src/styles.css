@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0b0b0d;
+  --color-bg-elevated: #121214;
+  --color-fg: #ffffff;
+  --color-muted: #8b8b93;
+  --color-subtle: #5c5c64;
+  --color-accent: #9cd6ff;
+  --color-amber: #e4c49a;
+  --color-base-blue: #0052ff;
+  --color-border: color-mix(in oklab, var(--color-fg) 10%, transparent);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1.2;
+
+  --shadow-tile: 0 0 0 1px color-mix(in oklab, var(--color-fg) 8%, transparent);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+.trench-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-accent) 10%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-accent) 10%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 64px 64px;
+  background-position: center top;
+  mask-image: radial-gradient(
+    ellipse 90% 72% at 50% 36%,
+    black 12%,
+    transparent 76%
+  );
+}
+
+.trench-noise {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+.trench-streak {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 8%,
+    var(--color-accent) 34%,
+    var(--color-amber) 66%,
+    transparent 92%,
+    transparent 100%
+  );
+}
+
+.trench-streak-glow {
+  background: linear-gradient(
+    90deg,
+    transparent 6%,
+    color-mix(in oklab, var(--color-accent) 55%, transparent) 34%,
+    color-mix(in oklab, var(--color-amber) 48%, transparent) 66%,
+    transparent 94%
+  );
+}
+
+.trench-tile {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--color-accent) 26%, transparent),
+    0 0 28px color-mix(in oklab, var(--color-accent) 22%, transparent);
+}
+
+.trench-mark-glow {
+  animation: trench-breathe 5.5s ease-in-out infinite;
+}
+
+.headline {
+  font-size: clamp(1.65rem, 5.6vw, 4.35rem);
+  line-height: 1.04;
+  letter-spacing: 0.06em;
+}
+
+.headline-or {
+  font-size: clamp(0.68rem, 1.4vw, 0.88rem);
+  letter-spacing: 0.42em;
+}
+
+.tracking-footer {
+  letter-spacing: 0.22em;
+}
+
+.tracking-notify {
+  letter-spacing: 0.14em;
+}
+
+.meme-caption {
+  text-shadow: 0 1px 10px rgb(0 0 0 / 0.78);
+}
+
+.meme-card {
+  width: min(42vw, 11rem);
+  aspect-ratio: 3 / 4;
+}
+
+@media (min-width: 768px) {
+  .meme-card {
+    width: 10.25rem;
+  }
+}
+
+@keyframes trench-breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes trench-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero-enter > * {
+  opacity: 0;
+  animation: trench-enter 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-enter > *:nth-child(1) {
+  animation-delay: 40ms;
+}
+.hero-enter > *:nth-child(2) {
+  animation-delay: 120ms;
+}
+.hero-enter > *:nth-child(3) {
+  animation-delay: 200ms;
+}
+.hero-enter > *:nth-child(4) {
+  animation-delay: 280ms;
+}
+
+@keyframes trench-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.meme-track {
+  animation: trench-marquee 72s linear infinite;
+  will-change: transform;
+}
+
+.meme-viewport:hover .meme-track,
+.meme-viewport:focus-within .meme-track {
+  animation-play-state: paused;
+}
+
+.meme-viewport {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 767px) {
+  .meme-viewport {
+    mask-image: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trench-mark-glow,
+  .hero-enter > *,
+  .meme-track {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .meme-track {
+    display: grid !important;
+    grid-auto-flow: row !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: none !important;
+    width: 100% !important;
+    max-width: 24rem;
+    margin-inline: auto;
+    gap: 0.75rem !important;
+    padding-inline: 1rem;
+  }
+
+  .meme-dup {
+    display: none !important;
+  }
+
+  .meme-viewport {
+    mask-image: none;
+    overflow: visible;
+  }
+
+  .meme-card {
+    width: 100%;
+  }
+}
